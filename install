@@ -1,0 +1,61 @@
+#!/bin/bash
+apt-get update && apt-get upgrade -y
+apt-get install curl -y
+apt-get install apache2 -y
+apt-get install php5 libapache2-mod-php5 php5-mcrypt -y
+service apache2 restart
+apt-get install mysql-server php5-mysql -y
+mysql_install_db
+mysql_secure_installation
+apt-get install phpmyadmin -y
+php5enmod mcrypt
+service apache2 restart
+ln -s /usr/share/phpmyadmin /var/www/html/phpmyadmin 
+apt-get install libssh2-1-dev libssh2-php -y
+php -m |grep ssh2
+service apache2 restart
+cd /var/www/html
+wget http://hostgrid.com.br/downloads/painel4.zip
+apt-get install unzip -y
+unzip painel4.zip
+rm painelssh.zip index.html
+clear
+
+nano /var/www/html/pages/system/pass.php 
+<?php $pass = 'SUA_SENHA';?> 
+curl IP_DA_SUA_VPS/create.php  
+
+cd /var/www/html
+
+rm create.php  
+
+service apache2 restart 
+
+cd
+crontab -e 
+
+
+• Apos inserir o comando acima vai abrir um documento para edição, copie o texto abaixo
+
+
+* * * * * /usr/bin/php /var/www/html/pages/system/cron.php
+* * * * * /usr/bin/php /var/www/html/pages/system/cron.ssh.php 
+* * * * * /usr/bin/php /var/www/html/pages/system/cron.sms.php 
+* * * * * /usr/bin/php /var/www/html/pages/system/cron.online.ssh.php 
+10 * * * * /usr/bin/php /var/www/html/pages/system/cron.servidor.php 
+
+• Cole no documento na ultima linha. 
+dpkg-reconfigure tzdata   
+
+wget http://hostgrid.com.br/downloads/vpsmanagersetup.sh 
+  
+
+apt-get update && apt-get upgrade 
+
+3 - Executar comando de permissão.  
+
+chmod 777 vpsmanagersetup.sh 
+
+4 - Feito isso agora vamos instalar o vpsmanager 2.0
+  
+./vpsmanagersetup.sh 
